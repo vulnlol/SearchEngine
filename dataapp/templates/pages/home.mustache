@@ -2,186 +2,197 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search - Valor Intelligence</title>
+
+    <!-- External Fonts and Icons -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+
+    <!-- Security and integrity scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/bcryptjs@2.4.3/dist/bcrypt.min.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Database Search - Illicit Services</title>
-    
-    <meta name="description" content="Search our database of leaked information. All information is in the public domain and has been compiled into one search engine.">
-    <meta name="robots" content="index, follow">
 
+    <!-- SEO and Open Graph Meta Tags -->
+    <meta name="description" content="Search our database of publicly acquired information. All information is in the public domain and has been compiled into one search engine.">
+    <meta name="robots" content="index, follow">
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="Illict Services LTD" />
-    <meta property="og:description" content="Search our database of leaked information. All information is in the public domain and has been compiled into one search engine." />
-    <meta property="og:url" content="https://search.illicit.services" />
+    <meta property="og:title" content="Valor Intelligence LTD" />
+    <meta property="og:description" content="Search our database of publicaly acquired information. All information is in the public domain and has been compiled into one search engine." />
+    <meta property="og:url" content="https://search.valorintel.com" />
     <meta property="og:site_name" content="Database Search" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="Content-Language" content="en" />
 
-    
-    <meta name="apple-mobile-web-app-status-bar" content="#000000" />
-    <meta name="theme-color" content="#000000" />
-
     <style>
-        html,
-        body, {
-            height: 100%;
+        /* Importing fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap');
+
+        /* Basic resets */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        #app {
-            height: 100%;
+        body {
+            background-color: #121212;
+            color: #f8f9fa;
+            line-height: 1.6;
+            padding: 20px;
+            font-family: 'Roboto', sans-serif;
         }
 
-        html,
-        body, #app, v-main__wrap {
-            background-color: black;
+        header, section, aside, footer {
+            border: 1px solid #343a40;
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 1200px;
+            background-color: #1e1e1e;
         }
 
-        /* */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #f8f9fa;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            text-decoration: underline;
+            text-decoration-color: #ff0000;
+            text-decoration-thickness: 3px;
+        }
+
+        section, aside {
+            margin-top: 10px;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 900;
+            border-bottom: 4px solid #adb5bd;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            border-top: 3px solid #343a40;
+            font-family: 'Roboto', sans-serif;
+        }
     </style>
 </head>
+
 
 <body>
     <div id="app">
         <v-app>
             <v-main>
-                <span>
-                    <!-- Wallet goes in the top-right -->
-                    <v-toolbar flat color="transparent" dark app style="position: absolute; top: 0; right: 0; z-index: 1000">
-                        <v-toolbar-title class="white--text">
-                            <v-btn @click="showWallet = !showWallet" elevation="0" class="white--text" text><span id="creditCount" v-text="creditStr+' Credits'"></span><v-icon>
-                                    mdi-wallet
-                                </v-icon></v-btn>
-                        </v-toolbar-title>
-                    </v-toolbar>
-                    <!-- Wallet Modal -->
-                    <v-dialog v-model="showWallet" max-width="500px">
-                        <v-card>
-                            <v-card-title>
-                                <span class="headline">Wallet Management</span>
-                                <v-spacer></v-spacer>
-                                <!-- About tooltip -->
-                                <v-tooltip bottom>
-                                    <template v-slot:activator="{ on }">
-                                        <v-btn icon v-on="on" @click="showAbout = !showAbout">
-                                            <v-icon>mdi-information</v-icon>
-                                        </v-btn>
-                                    </template>
-                                    <span>Credits currently can be used for: <ul><li>Bulk data exports (thousands to hundres of thousands of records)</li></ul>Credits will soon be used to allow for: <ul><li>Mass-deletion of records (avoid crypto fees)</li><li>Enrichment of your own data-sets (via CSV upload)</li><li>Exporting data from the visualization tool as CSV or Relational JSON</li><li>Any other resource intensive task</li></ul><br/>Of course, regular search will remain free, forever.</span>
-                                </v-tooltip>
-                            </v-card-title>
-                            <v-card-text>
-                                <v-row>
-                                    <v-col cols="12">
-                                        <!-- Allow user to copy their wallet ID -->
-                                        <v-text-field id="walletId" v-model="walletId" label="Wallet ID" append append-icon="mdi-content-copy" @click:append="copyWalletId" @change="updateWalletID"></v-text-field>
-                                        <!-- Subtle warning to user that anyone can use their credits if they have their wallet ID -->
-                                        <v-alert dense type="warning" outlined>
-                                            Your wallet ID is the key to your credits. If you share it with someone, that person can use your credits. If you lose it, you lose your credits.
-                                        </v-alert>
-                                    </v-col>
+                <v-container class="py-5">
+                    <v-row>
+                        <v-col cols="12">
+                            <h1 class="text-center">Records Search</h1>
+                            <h2 class="text-center">{{ count }} Records in DB</h2>
+                            <h3 class="text-center">
+                                <a href="/map" target="_blank">Try the Map</a> |
+                                <a href="/faq">FAQ</a> |
+                                <a href="/donations">Donations</a> |
+                                <a href="/exports">Exports</a>
+                            </h3>
+                        </v-col>
+                    </v-row>
 
-                                    <v-col cols="12">
-                                        <!-- Allow user to re-fill their wallet -->
-                                        <v-row>
-                                            <v-col cols="10">
-                                                <v-text-field v-model="walletFill" label="Fill Wallet (1 USD = 100)" append prepend-icon="mdi-currency-usd"></v-text-field>
-                                            </v-col>
-                                            <v-col cols="2">
-                                                <v-btn class="my-0 mt-3" color="blue darken-1" block text @click="doFillWallet">
-                                                    Fill
-                                                </v-btn>
-                                            </v-col>
-                                        </v-row>
-                                    </v-col>
-                                </v-row>
-                            </v-card-text>
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn color="blue darken-1" text @click="showWallet = false">
-                                    Close
+                    <v-card elevation="2" class="pa-4" color="#1e1e1e">
+                        <v-row v-for="(query, idx) in queries" :key="idx" align="center" class="my-3">
+                            <v-col cols="1">
+                                <v-btn
+                                        icon
+                                        @click="idx === 0 ? addQuery() : queries.splice(idx, 1)"
+                                        color="red lighten-1"
+                                        class="white--text">
+                                    <v-icon>{{ idx === 0 ? 'mdi-plus' : 'mdi-minus' }}</v-icon>
                                 </v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-dialog>
-                </span>
-                <v-container flex pa-0>
-                    <h1 style="margin-top: 5%">Records Search</h1>                    
-                    <h2 style="margin-top: 2%">{{count}} Records in DB</h2>
-                    <h3 style="margin-top: 2%"><a href="/map" target="_blank">Try the Map</a>! | <a href="/dear_peter">A Letter to Peter Kleissner</a> | <a href="https://t.me/illsvc">Join the Telegram</a> | <a href="/faq">FAQ</a> | <a href="/donations">Donations</a> | <a href="/exports">Exports</a></h3>
-
-                    <!-- Align card to center of page-->
-                    <v-card elevation="0" style="background-color: transparent">
-                        <v-row>
-                            <v-col md="3">
-                            <h4 style="margin-top: 12%">Search Something...</h4>
                             </v-col>
-                            <v-col md="2">
-                            <v-checkbox v-model="exact" label="exact?"></v-checkbox>
+                            <v-col cols="2">
+                                <v-select
+                                        v-model="query.field"
+                                        :items="queryOptions"
+                                        label="Field"
+                                        dense
+                                        solo
+                                        class="white--text"
+                                        hide-details
+                                ></v-select>
                             </v-col>
-                            <v-col md="7">
-                                <v-spacer />
+                            <v-col cols="1" v-if="!isMobile()">
+                                <v-checkbox
+                                        v-model="query.not"
+                                        label="Is Not"
+                                        color="red"
+                                ></v-checkbox>
+                            </v-col>
+                            <v-col cols="6" v-if="query.field !== 'Password'">
+                                <v-text-field
+                                        v-model="query.value"
+                                        label="Value"
+                                        solo-inverted
+                                        hide-details
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="4" v-if="query.field === 'Password'">
+                                <v-text-field
+                                        v-model="query.value"
+                                        label="Password"
+                                        solo-inverted
+                                        hide-details
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="2" v-if="query.field === 'Password'">
+                                <v-checkbox
+                                        v-model="query.extendedSearch"
+                                        label="Extended Search"
+                                        color="green"
+                                ></v-checkbox>
+                            </v-col>
+                            <v-col cols="2" v-if="idx === 0">
+                                <v-btn
+                                        @click="buildAndSendQuery"
+                                        color="blue darken-2"
+                                        block
+                                        class="white--text">
+                                    <v-icon left>mdi-magnify</v-icon>Search
+                                </v-btn>
                             </v-col>
                         </v-row>
-                        
-                        <v-row v-for="query, idx in queries" style="width: 100%; margin-top: 2%">
-                                <v-col class="my-0 py-1 mx-0 px-0" md="1">
-                                    <v-btn v-if="idx === 0" @click="addQuery" elevation="0" class="white--text" text
-                                        fab><v-icon>
-                                            mdi-plus
-                                        </v-icon>
-                                    </v-btn>
-                                    <v-btn v-else @click="queries.splice(idx, 1)" elevation="0" class="white--text" text
-                                        fab><v-icon>
-                                            mdi-minus
-                                        </v-icon>
-                                </v-col>
-                                <v-col md="2">
-                                    <v-select class="my-0 py-0 mx-0 px-0" v-model="query.field" :items="queryOptions" autocomplete="off"></v-select>
-                                </v-col>
-                                <v-col v-if="!isMobile()" md="1">
-                                    <v-checkbox class="my-0 mx-0 px-0" v-model="query.not" label="Is Not"></v-checkbox>
-                                </v-col>
-                                <v-col v-if="query.field !== 'Password'" md="6">
-                                    <v-text-field class="my-0 py-0 mx-0 px-0" v-model="query.value"></v-text-field>
-                                </v-col>
-                                <v-col v-if="query.field === 'Password'" md="4">
-                                    <v-text-field class="my-0 py-0 mx-0 px-0" v-model="query.value"></v-text-field>
-                                </v-col>
-                                <v-col v-if="query.field === 'Password'" md="2">
-                                    <v-checkbox class="my-0 mx-0 px-0" v-model="query.extendedSearch" label="Extended Search"></v-text-field>
-                                </v-col>
-                                <v-col md="2">
-                                    <v-btn @click="buildAndSendQuery" v-if="idx === 0" class="my-0 py-0" elevation="0" class="white--text"
-                                        text><v-icon>
-                                            mdi-account-search
-                                        </v-icon></v-btn>
-                                </v-col>
-                            </v-row>
                     </v-card>
-
-                    <div style="margin-left: 10px">
-                        <p style="margin-top: 5%">Example Queries:</p>
-                        <p><a href="/records?firstName=Troy&lastName=Hunt">Name: Troy Hunt</a></p>
-                        <p><a href="/records?emails=larrytsantos@yahoo.com">Email: larrytsantos@yahoo.com</a></p>
-                        <p><a href="/records?usernames=Oni">Username: Oni</a></p>
-                        <p><a href="/records?VRN=kjg7920">License Plate: KJG7920</a></p>
-                    </div>
-                    <div style="margin-left: 10px">
-                        <p>If you find these services useful, BTC and Monero donations are appreciated. <br /> BTC: bc1qel7fg6yd96fp3yjh94av8pssz8er2yeluylzcw <br />XMR: 44y4PfBf2TmfgGEX7vAZ7MdCBohAuwDGee8BjwbVfUP75nmEQqbB3rDLRTfEcbkHq33ZVoofMrEX63fVPxHcsVv8AnD9KRo</p>
-                    </div>
-
-
-                    <small>Copyright <a href="https://illicit.services">Illicit Services LTD</a>. By using this service you agree with the <a href="/terms">terms of use</a>. <a href="/canary">Canary</a></small>
                 </v-container>
             </v-main>
         </v-app>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
     <script>
         const creditCountElement = document.getElementById("creditCount")

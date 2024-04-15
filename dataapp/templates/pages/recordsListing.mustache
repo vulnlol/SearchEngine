@@ -1,36 +1,103 @@
-<html>
-<!-- Lists all record's first names, at the bottom of the page there's options to choose a-z -->
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta property="og:type" content="article" />
-  <meta property="og:title" content="Record Report" />
-  <meta property="og:description" content="Database Record Report {{#record}}{{key}}: {{value}} {{/record}}" />
-  <meta property="og:site_name" content="Database Search" />
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <meta http-equiv="Content-Language" content="en" />
-  <meta name="robots" content="index, follow">
-  <title>Records Result - {{count}} Results</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Record Report" />
+    <meta property="og:description" content="Database Record Report" />
+    <meta property="og:site_name" content="Database Search" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Language" content="en" />
+    <meta name="robots" content="index, follow">
+    <title>Records Result - Results</title>
+    <style>
+        /* Basic resets */
+        body, h1, h2, dl, dd, dt {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <script>
-    function exportMore() {
-      const encodedUrl = encodeURIComponent(window.location.href);
-      window.location.href = `/exports?url=${encodedUrl}`;
-    }
-  </script>
+        body {
+            background-color: #121212;
+            color: #f8f9fa;
+            line-height: 1.6;
+            padding: 20px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        h1, h2 {
+            border-bottom: 1px solid #343a40;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .record {
+            border: 1px solid #343a40;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #1e1e1e;
+        }
+
+        dl {
+            margin: 10px 0;
+        }
+
+        dt {
+            font-weight: bold;
+        }
+
+        dd {
+            margin-left: 20px;
+        }
+
+        a {
+            color: #ff6347; /* tomato */
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        button {
+            background-color: #ff6347; /* tomato */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #e55347;
+        }
+    </style>
+    <script>
+        function exportMore() {
+            const encodedUrl = encodeURIComponent(window.location.href);
+            window.location.href = `/exports?url=${encodedUrl}`;
+        }
+    </script>
 </head>
 <body>
-    <h1>Records Result</h1>
-    <h2>{{resultCount}} Hits - {{count}} Results Shown <button onclick="exportMore()">Click here for more</button></h2>
-    {{#records}}
+<h1>Records Result</h1>
+<h2>{{resultCount}} Hits - {{count}} Results Shown <button onclick="exportMore()">Click here for more</button></h2>
+{{#records}}
     <div class="record">
         <dl>
             <dt>
-            <a href="/documents/by_id/{{ id }}">{{id}}</a> - <a href='/visualize?id={{id}}' rel="nofollow">(Visualize)</a> - <a href="/faq" rel="nofollow">(See FAQ about Removal)</a></dt>
+                <a href="/documents/by_id/{{ id }}">{{id}}</a> -
+                <a href='/visualize?id={{id}}' rel="nofollow">(Visualize)</a> -
+                <a href="/faq" rel="nofollow">(See FAQ about Removal)</a>
+            </dt>
             {{#fields}}
-            
-            <dd> {{ . }}</a></dd>
+                <dd> {{ . }}</dd>
             {{/fields}}
         </dl>
     </div>
-    {{/records}}
+{{/records}}
 </body>
 </html>
