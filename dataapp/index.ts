@@ -247,7 +247,6 @@ const fs = require('fs')
 const indexTemplate = fs.readFileSync('templates/pages/home.mustache', 'utf-8')
 const recordByIdTemplate = fs.readFileSync('templates/pages/recordById.mustache', 'utf-8')
 const recordsListingTemplate = fs.readFileSync('templates/pages/recordsListing.mustache', 'utf-8')
-const donationsTemplate = fs.readFileSync('templates/pages/donations.html', 'utf-8')
 const exportsTemplate = fs.readFileSync('templates/pages/exports.html', 'utf-8')
 
 const visualizerTemplate = fs.readFileSync('templates/pages/visualizer.html', 'utf-8')
@@ -715,6 +714,204 @@ function buildQuery(requestedQuery: Record<string, string | string[]>, res: expr
             orQuery.push(`vin:WRfKdFVogXnk82${vin}WRfKdFVogXnk82`)
         })
     }
+
+    if (requestedQuery.ssn != undefined && typeof requestedQuery.ssn === 'string') {
+        query.push(`ssn:${requestedQuery.ssn}`)
+    } else if (requestedQuery.ssn != undefined && Array.isArray(requestedQuery.ssn)) {
+        requestedQuery.ssn.forEach((ssn) => {
+            orQuery.push(`ssn:WRfKdFVogXnk82${ssn}WRfKdFVogXnk82`)
+        })
+    }
+
+    if (requestedQuery.notssn != undefined && typeof requestedQuery.notssn === 'string') {
+        notQuery.push(`ssn:${requestedQuery.notssn}`)
+    } else if (requestedQuery.notssn != undefined && Array.isArray(requestedQuery.notssn)) {
+        requestedQuery.notssn.forEach((notSSN) => {
+            notQuery.push(`ssn:${notSSN}`)
+        })
+    }
+
+    if (requestedQuery.licenseNumber != undefined && typeof requestedQuery.licenseNumber === 'string') {
+        query.push(`licenseNumber:${requestedQuery.licenseNumber}`)
+    } else if (requestedQuery.licenseNumber != undefined && Array.isArray(requestedQuery.licenseNumber)) {
+        requestedQuery.licenseNumber.forEach((licenseNumber) => {
+            orQuery.push(`licenseNumber:WRfKdFVogXnk82${licenseNumber}WRfKdFVogXnk82`)
+        })
+    }
+
+    if (requestedQuery.notlicenseNumber != undefined && typeof requestedQuery.notlicenseNumber === 'string') {
+        notQuery.push(`licenseNumber:${requestedQuery.notlicenseNumber}`)
+    } else if (requestedQuery.notlicenseNumber != undefined && Array.isArray(requestedQuery.notlicenseNumber)) {
+        requestedQuery.notlicenseNumber.forEach((notLicenseNumber) => {
+            notQuery.push(`licenseNumber:${notLicenseNumber}`)
+        })
+    }
+
+    // Regular query
+    if (requestedQuery.debitNumber != undefined && typeof requestedQuery.debitNumber === 'string') {
+        query.push(`debitNumber:${requestedQuery.debitNumber}`)
+    } else if (requestedQuery.debitNumber != undefined && Array.isArray(requestedQuery.debitNumber)) {
+        requestedQuery.debitNumber.forEach((debitNumber) => {
+            orQuery.push(`debitNumber:WRfKdFVogXnk82${debitNumber}WRfKdFVogXnk82`)
+        })
+    }
+
+    if (requestedQuery.notdebitNumber != undefined && typeof requestedQuery.notdebitNumber === 'string') {
+        notQuery.push(`debitNumber:${requestedQuery.notdebitNumber}`)
+    } else if (requestedQuery.notdebitNumber != undefined && Array.isArray(requestedQuery.notdebitNumber)) {
+        requestedQuery.notdebitNumber.forEach((notDebitNumber) => {
+            notQuery.push(`debitNumber:${notDebitNumber}`)
+        })
+    }
+
+    if (requestedQuery.debitExpiration != undefined && typeof requestedQuery.debitExpiration === 'string') {
+        query.push(`debitExpiration:${requestedQuery.debitExpiration}`)
+    } else if (requestedQuery.debitExpiration != undefined && Array.isArray(requestedQuery.debitExpiration)) {
+        requestedQuery.debitExpiration.forEach((debitExpiration) => {
+            orQuery.push(`debitExpiration:WRfKdFVogXnk82${debitExpiration}WRfKdFVogXnk82`)
+        })
+    }
+
+    if (requestedQuery.notdebitExpiration != undefined && typeof requestedQuery.notdebitExpiration === 'string') {
+        notQuery.push(`debitExpiration:${requestedQuery.notdebitExpiration}`)
+    } else if (requestedQuery.notdebitExpiration != undefined && Array.isArray(requestedQuery.notdebitExpiration)) {
+        requestedQuery.notdebitExpiration.forEach((notDebitExpiration) => {
+            notQuery.push(`debitExpiration:${notDebitExpiration}`)
+        })
+    }
+
+    // Regular query
+    if (requestedQuery.debitPin != undefined && typeof requestedQuery.debitPin === 'string') {
+        query.push(`debitPin:${requestedQuery.debitPin}`)
+    } else if (requestedQuery.debitPin != undefined && Array.isArray(requestedQuery.debitPin)) {
+        requestedQuery.debitPin.forEach((debitPin) => {
+            orQuery.push(`debitPin:WRfKdFVogXnk82${debitPin}WRfKdFVogXnk82`)
+        })
+    }
+
+    if (requestedQuery.notdebitPin != undefined && typeof requestedQuery.notdebitPin === 'string') {
+        notQuery.push(`debitPin:${requestedQuery.notdebitPin}`)
+    } else if (requestedQuery.notdebitPin != undefined && Array.isArray(requestedQuery.notdebitPin)) {
+        requestedQuery.notdebitPin.forEach((notDebitPin) => {
+            notQuery.push(`debitPin:${notDebitPin}`)
+        })
+    }
+
+    if (requestedQuery.creditNumber != undefined && typeof requestedQuery.creditNumber === 'string') {
+        query.push(`creditNumber:${requestedQuery.creditNumber}`)
+    } else if (requestedQuery.creditNumber != undefined && Array.isArray(requestedQuery.creditNumber)) {
+        requestedQuery.creditNumber.forEach((creditNumber) => {
+            orQuery.push(`creditNumber:WRfKdFVogXnk82${creditNumber}WRfKdFVogXnk82`)
+        })
+    }
+
+    if (requestedQuery.notcreditNumber != undefined && typeof requestedQuery.notcreditNumber === 'string') {
+        notQuery.push(`creditNumber:${requestedQuery.notcreditNumber}`)
+    } else if (requestedQuery.notcreditNumber != undefined && Array.isArray(requestedQuery.notcreditNumber)) {
+        requestedQuery.notcreditNumber.forEach((notCreditNumber) => {
+            notQuery.push(`creditNumber:${notCreditNumber}`)
+        })
+    }
+
+    if (requestedQuery.creditExpiration != undefined && typeof requestedQuery.creditExpiration === 'string') {
+        query.push(`creditExpiration:${requestedQuery.creditExpiration}`)
+    } else if (requestedQuery.creditExpiration != undefined && Array.isArray(requestedQuery.creditExpiration)) {
+        requestedQuery.creditExpiration.forEach((creditExpiration) => {
+            orQuery.push(`creditExpiration:WRfKdFVogXnk82${creditExpiration}WRfKdFVogXnk82`)
+        })
+    }
+
+    if (requestedQuery.notcreditExpiration != undefined && typeof requestedQuery.notcreditExpiration === 'string') {
+        notQuery.push(`creditExpiration:${requestedQuery.notcreditExpiration}`)
+    } else if (requestedQuery.notcreditExpiration != undefined && Array.isArray(requestedQuery.notcreditExpiration)) {
+        requestedQuery.notcreditExpiration.forEach((notCreditExpiration) => {
+            notQuery.push(`creditExpiration:${notCreditExpiration}`)
+        })
+    }
+
+    if (requestedQuery.passportNumber != undefined && typeof requestedQuery.passportNumber === 'string') {
+        query.push(`passportNumber:${requestedQuery.passportNumber}`)
+    } else if (requestedQuery.passportNumber != undefined && Array.isArray(requestedQuery.passportNumber)) {
+        requestedQuery.passportNumber.forEach((passportNumber) => {
+            orQuery.push(`passportNumber:WRfKdFVogXnk82${passportNumber}WRfKdFVogXnk82`)
+        })
+    }
+
+    if (requestedQuery.notpassportNumber != undefined && typeof requestedQuery.notpassportNumber === 'string') {
+        notQuery.push(`passportNumber:${requestedQuery.notpassportNumber}`)
+    } else if (requestedQuery.notpassportNumber != undefined && Array.isArray(requestedQuery.notpassportNumber)) {
+        requestedQuery.notpassportNumber.forEach((notPassportNumber) => {
+            notQuery.push(`passportNumber:${notPassportNumber}`)
+        })
+    }
+
+    if (requestedQuery.militaryID != undefined && typeof requestedQuery.militaryID === 'string') {
+        query.push(`militaryID:${requestedQuery.militaryID}`)
+    } else if (requestedQuery.militaryID != undefined && Array.isArray(requestedQuery.militaryID)) {
+        requestedQuery.militaryID.forEach((militaryID) => {
+            orQuery.push(`militaryID:WRfKdFVogXnk82${militaryID}WRfKdFVogXnk82`)
+        })
+    }
+
+    if (requestedQuery.notmilitaryID != undefined && typeof requestedQuery.notmilitaryID === 'string') {
+        notQuery.push(`militaryID:${requestedQuery.notmilitaryID}`)
+    } else if (requestedQuery.notmilitaryID != undefined && Array.isArray(requestedQuery.notmilitaryID)) {
+        requestedQuery.notmilitaryID.forEach((notMilitaryID) => {
+            notQuery.push(`militaryID:${notMilitaryID}`)
+        })
+    }
+
+    if (requestedQuery.bankAccountNumbers != undefined && typeof requestedQuery.bankAccountNumbers === 'string') {
+        query.push(`bankAccountNumbers:${requestedQuery.bankAccountNumbers}`)
+    } else if (requestedQuery.bankAccountNumbers != undefined && Array.isArray(requestedQuery.bankAccountNumbers)) {
+        requestedQuery.bankAccountNumbers.forEach((bankAccountNumber) => {
+            orQuery.push(`bankAccountNumbers:WRfKdFVogXnk82${bankAccountNumber}WRfKdFVogXnk82`)
+        })
+    }
+
+    if (requestedQuery.notbankAccountNumbers != undefined && typeof requestedQuery.notbankAccountNumbers === 'string') {
+        notQuery.push(`bankAccountNumbers:${requestedQuery.notbankAccountNumbers}`)
+    } else if (requestedQuery.notbankAccountNumbers != undefined && Array.isArray(requestedQuery.notbankAccountNumbers)) {
+        requestedQuery.notbankAccountNumbers.forEach((notBankAccountNumber) => {
+            notQuery.push(`bankAccountNumbers:${notBankAccountNumber}`)
+        })
+    }
+
+    if (requestedQuery.schoolsAttended != undefined && typeof requestedQuery.schoolsAttended === 'string') {
+        query.push(`schoolsAttended:${requestedQuery.schoolsAttended}`)
+    } else if (requestedQuery.schoolsAttended != undefined && Array.isArray(requestedQuery.schoolsAttended)) {
+        requestedQuery.schoolsAttended.forEach((school) => {
+            orQuery.push(`schoolsAttended:WRfKdFVogXnk82${school}WRfKdFVogXnk82`)
+        })
+    }
+
+    if (requestedQuery.notschoolsAttended != undefined && typeof requestedQuery.notschoolsAttended === 'string') {
+        notQuery.push(`schoolsAttended:${requestedQuery.notschoolsAttended}`)
+    } else if (requestedQuery.notschoolsAttended != undefined && Array.isArray(requestedQuery.notschoolsAttended)) {
+        requestedQuery.notschoolsAttended.forEach((notSchool) => {
+            notQuery.push(`schoolsAttended:${notSchool}`)
+        })
+    }
+
+    if (requestedQuery.certifications != undefined && typeof requestedQuery.certifications === 'string') {
+        query.push(`certifications:${requestedQuery.certifications}`)
+    } else if (requestedQuery.certifications != undefined && Array.isArray(requestedQuery.certifications)) {
+        requestedQuery.certifications.forEach((certification) => {
+            orQuery.push(`certifications:WRfKdFVogXnk82${certification}WRfKdFVogXnk82`)
+        })
+    }
+
+    if (requestedQuery.notcertifications != undefined && typeof requestedQuery.notcertifications === 'string') {
+        notQuery.push(`certifications:${requestedQuery.notcertifications}`)
+    } else if (requestedQuery.notcertifications != undefined && Array.isArray(requestedQuery.notcertifications)) {
+        requestedQuery.notcertifications.forEach((notCertification) => {
+            notQuery.push(`certifications:${notCertification}`)
+        })
+    }
+
+
+
+
 
 
 

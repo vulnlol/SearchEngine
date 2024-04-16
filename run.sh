@@ -1,15 +1,3 @@
-read -p "Enter the IP address of your Solr server [127.0.0.1]: " ip
-ip=${name:-"127.0.0.1"}
-
-read -p "Enter the Port address of your Solr server [8983]: " port
-port=${name:-"8983"}
-
-read -p "Enter the number of shards (each shard can handle 2,147,483,519 documents. If you don't know, use one per Solr host. You can add more later, but it will require learning Solr's SHARD command.) [4]: " shards
-shards=${name:-"4"}
-
-read -p "Enter the replication factor (redundant copies of shards accross hosts. 1 = No redundancy) [1]: " replicationFactor
-replicationFactor=${name:-"1"}
-
 echo "Creating Database"
 
 # Create collection for data
@@ -62,3 +50,42 @@ curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: app
 curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: application/json' --data-raw '{"add-field":{"stored":"true","indexed":"true","name":"vin","type":"text_general","uninvertible":"true"}}'
 curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: application/json' --data-raw '{"add-field":{"stored":"true","indexed":"true","name":"zipCode","type":"string","uninvertible":"true"}}'
 curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: application/json' --data-raw '{"add-field":{"stored":"true","indexed":"true","name":"VRN","type":"text_general","uninvertible":"true"}}'
+
+# Add SSN field
+curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"ssn","type":"string","stored":"true","indexed":"true"}}'
+
+# Add License Number field
+curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"licenseNumber","type":"string","stored":"true","indexed":"true"}}'
+
+# Add Debit Number field
+curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"debitNumber","type":"string","stored":"true","indexed":"true"}}'
+
+# Add Debit Expiration field
+curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"debitExpiration","type":"string","stored":"true","indexed":"true"}}'
+
+# Add Debit Pin field
+curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"debitPin","type":"string","stored":"true","indexed":"true"}}'
+
+# Add Credit Number field
+curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"creditNumber","type":"string","stored":"true","indexed":"true"}}'
+
+# Add Credit Expiration field
+curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"creditExpiration","type":"string","stored":"true","indexed":"true"}}'
+
+# Add Credit Pin field
+curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"creditPin","type":"string","stored":"true","indexed":"true"}}'
+
+# Add Passport Number field
+curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"passportNumber","type":"string","stored":"true","indexed":"true"}}'
+
+# Add Military ID field
+curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"militaryID","type":"string","stored":"true","indexed":"true"}}'
+
+# Add Bank Account Numbers field (multiValued)
+curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"bankAccountNumbers","type":"string","stored":"true","indexed":"true","multiValued":"true"}}'
+
+# Add Schools Attended field (multiValued)
+curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"schoolsAttended","type":"string","stored":"true","indexed":"true","multiValued":"true"}}'
+
+# Add Certifications field (multiValued)
+curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"certifications","type":"string","stored":"true","indexed":"true","multiValued":"true"}}'

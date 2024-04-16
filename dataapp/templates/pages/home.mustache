@@ -117,7 +117,6 @@
                             <h3 class="text-center">
                                 <a href="/map" target="_blank">Try the Map</a> |
                                 <a href="/faq">FAQ</a> |
-                                <a href="/donations">Donations</a> |
                                 <a href="/exports">Exports</a>
                             </h3>
                         </v-col>
@@ -236,7 +235,20 @@
                     'City',
                     'State',
                     'Zip',
-                    'Source'
+                    'Source', // Stuff I added is past here
+                    'SSN',
+                    'License Number',
+                    'Debit',
+                    'Debit Expiration',
+                    'Debit Pin',
+                    'Credit',
+                    'Credit Expiration',
+                    'Credit Pin',
+                    'Passport Number',
+                    'Military ID',
+                    'Bank Account Numbers',
+                    'Schools Attended',
+                    'Certifications',
                 ],
                 queryFieldMap: {
                     'First Name': 'firstName',
@@ -258,7 +270,20 @@
                     'City': 'city',
                     'State': 'state',
                     'Zip': 'zipCode',
-                    'Source': 'source'
+                    'Source': 'source', // Everything I added is after this
+                    'SSN' : 'ssn',
+                    'License Number' : 'licenseNumber',
+                    'Debit' : 'debitNumber',
+                    'Debit Expiration' : 'debitExpiration',
+                    'Debit Pin' : 'debitPin',
+                    'Credit' : 'creditNumber',
+                    'Credit Expiration' : 'creditExpiration',
+                    'Credit Pin' : 'creditPin',
+                    'Passport Number' : 'passportNumber',
+                    'Military ID' : 'militaryID',
+                    'Bank Account Numbers' : 'bankAccountNumbers',
+                    'Schools Attended' : 'schoolsAttended',
+                    'Certifications' : 'certifications',
                 }
             }),
             mounted() {
