@@ -1,11 +1,72 @@
 # Data Search Engine
  
-A modified version of search.0t.rocks
+Fork of search.0t.rocks beautiful search engine.
+
+**DONT BE EVIL**
+
+
 
 ## Changes
 - Enhanced styling across all pages
 - Implementation of a login system (currently in progress)
 - Revamping the export system (planned)
+
+
+<details><summary>Search Field Parameters</summary><br>
+* Accuracy Radius
+* Address
+* ASN
+* ASN Org
+* Auto Body
+* Auto Class
+* Auto Make
+* Auto Model
+* Auto Year
+* Birth Year
+* Birth Month
+* Birthday
+* City
+* Continent
+* Country
+* DOB
+* Domain
+* Emails
+* Ethnicity
+* FirstName
+* MiddleName
+* Gender
+* Income
+* IPs
+* LastName
+* LatLong
+* Line
+* Links
+* Location
+* Notes
+* Party
+* Passwords
+* Phone Numbers
+* Photos
+* Source
+* State
+* Usernames
+* VIN
+* Zip Code
+* VRN
+* SSN
+* License Number
+* Debit Number
+* Debit Expiration
+* Debit Pin
+* Credit Number
+* Credit Expiration
+* Credit Pin
+* Passport Number
+* Military ID
+* Bank Account Numbers
+* Schools Attended
+* Certifications
+</details>
 
 
 <details>

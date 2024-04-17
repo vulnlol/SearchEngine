@@ -1,4 +1,5 @@
 echo "Creating Database"
+echo "If you have defined a different port for your solr server please edit this file's linked ports"
 
 # Create collection for data
 curl "http://127.0.0.1:8983/solr/admin/collections?action=CREATE&name=BigData&numShards=8&replicationFactor=3&wt=json" 
@@ -50,16 +51,16 @@ curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: app
 curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: application/json' --data-raw '{"add-field":{"stored":"true","indexed":"true","name":"vin","type":"text_general","uninvertible":"true"}}'
 curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: application/json' --data-raw '{"add-field":{"stored":"true","indexed":"true","name":"zipCode","type":"string","uninvertible":"true"}}'
 curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: application/json' --data-raw '{"add-field":{"stored":"true","indexed":"true","name":"VRN","type":"text_general","uninvertible":"true"}}'
-curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"ssn","type":"string","stored":"true","indexed":"true"}}'
-curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"licenseNumber","type":"string","stored":"true","indexed":"true"}}'
-curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"debitNumber","type":"string","stored":"true","indexed":"true"}}'
-curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"debitExpiration","type":"string","stored":"true","indexed":"true"}}'
-curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"debitPin","type":"string","stored":"true","indexed":"true"}}'
-curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"creditNumber","type":"string","stored":"true","indexed":"true"}}'
-curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"creditExpiration","type":"string","stored":"true","indexed":"true"}}'
-curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"creditPin","type":"string","stored":"true","indexed":"true"}}'
-curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"passportNumber","type":"string","stored":"true","indexed":"true"}}'
-curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"militaryID","type":"string","stored":"true","indexed":"true"}}'
-curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"bankAccountNumbers","type":"string","stored":"true","indexed":"true","multiValued":"true"}}'
-curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"schoolsAttended","type":"string","stored":"true","indexed":"true","multiValued":"true"}}'
-curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"certifications","type":"string","stored":"true","indexed":"true","multiValued":"true"}}'
+curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: application/json' --data-raw '{"add-field":{"name":"ssn","type":"string","stored":"true","indexed":"true"}}'
+curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: application/json' --data-raw '{"add-field":{"name":"licenseNumber","type":"string","stored":"true","indexed":"true"}}'
+curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: application/json' --data-raw '{"add-field":{"name":"debitNumber","type":"string","stored":"true","indexed":"true"}}'
+curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: application/json' --data-raw '{"add-field":{"name":"debitExpiration","type":"string","stored":"true","indexed":"true"}}'
+curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: application/json' --data-raw '{"add-field":{"name":"debitPin","type":"string","stored":"true","indexed":"true"}}'
+curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: application/json' --data-raw '{"add-field":{"name":"creditNumber","type":"string","stored":"true","indexed":"true"}}'
+curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: application/json' --data-raw '{"add-field":{"name":"creditExpiration","type":"string","stored":"true","indexed":"true"}}'
+curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: application/json' --data-raw '{"add-field":{"name":"creditPin","type":"string","stored":"true","indexed":"true"}}'
+curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: application/json' --data-raw '{"add-field":{"name":"passportNumber","type":"string","stored":"true","indexed":"true"}}'
+curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: application/json' --data-raw '{"add-field":{"name":"militaryID","type":"string","stored":"true","indexed":"true"}}'
+curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: application/json' --data-raw '{"add-field":{"name":"bankAccountNumbers","type":"string","stored":"true","indexed":"true","multiValued":"true"}}'
+curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: application/json' --data-raw '{"add-field":{"name":"schoolsAttended","type":"string","stored":"true","indexed":"true","multiValued":"true"}}'
+curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: application/json' --data-raw '{"add-field":{"name":"certifications","type":"string","stored":"true","indexed":"true","multiValued":"true"}}'
