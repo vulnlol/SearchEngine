@@ -50,42 +50,16 @@ curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: app
 curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: application/json' --data-raw '{"add-field":{"stored":"true","indexed":"true","name":"vin","type":"text_general","uninvertible":"true"}}'
 curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: application/json' --data-raw '{"add-field":{"stored":"true","indexed":"true","name":"zipCode","type":"string","uninvertible":"true"}}'
 curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: application/json' --data-raw '{"add-field":{"stored":"true","indexed":"true","name":"VRN","type":"text_general","uninvertible":"true"}}'
-
-# Add SSN field
 curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"ssn","type":"string","stored":"true","indexed":"true"}}'
-
-# Add License Number field
 curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"licenseNumber","type":"string","stored":"true","indexed":"true"}}'
-
-# Add Debit Number field
 curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"debitNumber","type":"string","stored":"true","indexed":"true"}}'
-
-# Add Debit Expiration field
 curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"debitExpiration","type":"string","stored":"true","indexed":"true"}}'
-
-# Add Debit Pin field
 curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"debitPin","type":"string","stored":"true","indexed":"true"}}'
-
-# Add Credit Number field
 curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"creditNumber","type":"string","stored":"true","indexed":"true"}}'
-
-# Add Credit Expiration field
 curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"creditExpiration","type":"string","stored":"true","indexed":"true"}}'
-
-# Add Credit Pin field
 curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"creditPin","type":"string","stored":"true","indexed":"true"}}'
-
-# Add Passport Number field
 curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"passportNumber","type":"string","stored":"true","indexed":"true"}}'
-
-# Add Military ID field
 curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"militaryID","type":"string","stored":"true","indexed":"true"}}'
-
-# Add Bank Account Numbers field (multiValued)
 curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"bankAccountNumbers","type":"string","stored":"true","indexed":"true","multiValued":"true"}}'
-
-# Add Schools Attended field (multiValued)
 curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"schoolsAttended","type":"string","stored":"true","indexed":"true","multiValued":"true"}}'
-
-# Add Certifications field (multiValued)
 curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Content-Type: application/json' --data-raw '{"add-field":{"name":"certifications","type":"string","stored":"true","indexed":"true","multiValued":"true"}}'

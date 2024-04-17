@@ -1,0 +1,8 @@
+<form action="/login" method="post">
+    <label for="token">Token:</label>
+    <input type="text" id="token" name="token" required>
+    <button type="submit">Login</button>
+</form>
+{{#error}}
+    <p style="color: red;">{{error}}</p>
+{{/error}}

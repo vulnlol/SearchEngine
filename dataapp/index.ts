@@ -1,16 +1,25 @@
 import mustache from 'mustache'
-import express, { response } from 'express'
+import express, { Response } from 'express'
 import axios from 'axios'
 import { SolrRecord } from './types/solrrecord'
 import _ from 'lodash'
 import bodyParser from 'body-parser'
-import { v4 as uuidv4, v4 } from 'uuid'
+import { v4   as uuidv4, v4 } from 'uuid'
 import ss from 'simple-statistics'
 import ip from 'ip'
 import crypto from 'crypto'
 import { spawn } from 'child_process'
+import { Request } from 'express';
+import session from 'express-session';
 
 // import fetch from 'node-fetch';
+
+interface CustomRequest extends Request {
+    session: session.Session & Partial<session.SessionData> & {
+        isAuthenticated?: boolean;
+        token?: string;
+    }
+}
 
 const stateMapping: Record<string, string> = {
     "Alabama": "AL",
@@ -248,6 +257,7 @@ const indexTemplate = fs.readFileSync('templates/pages/home.mustache', 'utf-8')
 const recordByIdTemplate = fs.readFileSync('templates/pages/recordById.mustache', 'utf-8')
 const recordsListingTemplate = fs.readFileSync('templates/pages/recordsListing.mustache', 'utf-8')
 const exportsTemplate = fs.readFileSync('templates/pages/exports.html', 'utf-8')
+const loginTemplate = fs.readFileSync('templates/pages/login.mustache')
 
 const visualizerTemplate = fs.readFileSync('templates/pages/visualizer.html', 'utf-8')
 
@@ -1613,6 +1623,69 @@ app.get('/spatial', async (req, res) => {
     }
 })
 
+const nodeVault = require('node-vault')({
+    apiVersion: 'v1',
+    endpoint: 'http://vault:8200',
+    token: 'your-vault-token'
+});
+
+
+async function loginWithToken(req: CustomRequest, token: string): Promise<boolean> {
+    try {
+        const response = await nodeVault.tokenLookupSelf({ token });
+        if (response && response.data && response.data.policies?.length > 0) {
+            req.session.isAuthenticated = true;
+            req.session.token = token;
+            return true;
+        } else {
+            return false;
+        }
+    } catch (error) {
+        console.error('Error during token authentication with Vault:', error);
+        return false;
+    }
+}
+
+
+
+async function isAuthenticated(req: CustomRequest): Promise<boolean> {
+    if (!req.session || !req.session.isAuthenticated) {
+        return false;
+    }
+    try {
+        const response = await nodeVault.tokenLookupSelf({ token: req.session.token });
+        if (response && response.data && response.data.policies?.length > 0) {
+            return true;
+        } else {
+            req.session.isAuthenticated = false;
+            return false;
+        }
+    } catch (error) {
+        console.error('Error validating token with Vault:', error);
+        req.session.isAuthenticated = false;
+        return false;
+    }
+}
+module.exports = isAuthenticated;
+
+
+app.post('/login', async (req, res) => {
+    const token = req.body.token; // Get the token submitted by the form
+
+    // Use loginWithToken to validate the token with your Vault setup
+    const isAuthenticated = await loginWithToken(req, token);
+
+    if (isAuthenticated) {
+        // Redirect to a protected page if the login is successful
+        res.redirect('/');
+    } else {
+        // If authentication fails, re-render the login page with an error message
+        res.render('login', { error: 'Invalid token. Please try again.' });
+    }
+});
+
+
+
 app.get('/records', async (req, res) => {
     try {
         const userAgent = req.headers['user-agent']
@@ -1622,6 +1695,16 @@ app.get('/records', async (req, res) => {
                 return doAutomatedRes(res, req.query.wt === 'json')
             }
         }
+
+        // if (!await isAuthenticated(req)) {
+        //     // User is not authenticated
+        //     res.status(401);
+        //     return res.json({
+        //         error: true,
+        //         message: 'Unauthorized: User must be logged in to access this resource. Your IP has been logged.'
+        //     });
+        // }
+
 
         if (req.query.wt === 'json') {
             // Check if the user-agent is in the list of allowed user-agents
