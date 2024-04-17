@@ -1,4 +1,4 @@
-name: start-server.yml
+name: Push To Server And Rebuild
 on:
   push:
     branches:
