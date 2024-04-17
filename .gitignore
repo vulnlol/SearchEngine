@@ -1,2 +1,3 @@
 /dataapp/node_modules/
 *.json
+/.idea
