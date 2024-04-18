@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap');
+
+html, body {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #121212; /* Ensures the background color covers the whole page */
+    color: #f8f9fa;
+    line-height: 1.6;
+    font-family: 'Roboto', sans-serif; /* Applies Roboto universally unless overridden */
+}
+
+/* Your existing styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header, section, aside, footer {
+    border: 1px solid #343a40;
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 1200px;
+    background-color: #1e1e1e;
+}
+
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+}
+
+nav ul li {
+    margin-left: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #f8f9fa;
+    font-size: 16px;
+    transition: color 0.3s;
+}
+
+nav ul li a:hover {
+    text-decoration: underline;
+    text-decoration-color: #ff0000;
+    text-decoration-thickness: 3px;
+}
+
+section, aside {
+    margin-top: 10px;
+}
+
+h1, h2, h3 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 900;
+    border-bottom: 4px solid #adb5bd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    border-top: 3px solid #343a40;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Style for the text inside the input field when it is focused */
+.v-input--is-focused .v-input__control .v-input__slot {
+    color: #FFFFFF; /* Ensures text is white when focused */
+}
+
+/* Style for the input text and placeholder when the text field is not focused */
+.v-text-field--solo .v-input__slot {
+    color: #FFFFFF; /* Ensures text is white when not focused */
+}
+
+/* Style for the input text and placeholder when the text field is focused */
+.v-text-field--solo input::placeholder {
+    color: #B0BEC5; /* Lighter shade for placeholder text */
+}
+
+.v-text-field--solo input {
+    color: #FFFFFF; /* Text color for input, focused or not */
+}
+
+/* Ensure the label color is also appropriate */
+.v-label {
+    color: #FFFFFF !important; /* Ensures label is white always */
+}

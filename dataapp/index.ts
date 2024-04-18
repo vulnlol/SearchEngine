@@ -1,25 +1,18 @@
 import mustache from 'mustache'
-import express, { Response } from 'express'
 import axios from 'axios'
 import { SolrRecord } from './types/solrrecord'
 import _ from 'lodash'
 import bodyParser from 'body-parser'
 import { v4   as uuidv4, v4 } from 'uuid'
 import ss from 'simple-statistics'
-import ip from 'ip'
 import crypto from 'crypto'
 import { spawn } from 'child_process'
-import { Request } from 'express';
-import session from 'express-session';
+import session from 'express-session'
+import bcrypt from 'bcryptjs'
+import express, { Request, Response, NextFunction } from 'express';
 
-// import fetch from 'node-fetch';
 
-interface CustomRequest extends Request {
-    session: session.Session & Partial<session.SessionData> & {
-        isAuthenticated?: boolean;
-        token?: string;
-    }
-}
+
 
 const stateMapping: Record<string, string> = {
     "Alabama": "AL",
@@ -247,9 +240,9 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-const fs = require('fs')
 
-// const donations = JSON.parse(fs.readFileSync('templates/pages/donations.json', 'utf-8'))
+
+const fs = require('fs')
 
 
 // const mapTemplate = fs.readFileSync('templates/pages/map.html', 'utf-8')
@@ -257,7 +250,9 @@ const indexTemplate = fs.readFileSync('templates/pages/home.mustache', 'utf-8')
 const recordByIdTemplate = fs.readFileSync('templates/pages/recordById.mustache', 'utf-8')
 const recordsListingTemplate = fs.readFileSync('templates/pages/recordsListing.mustache', 'utf-8')
 const exportsTemplate = fs.readFileSync('templates/pages/exports.html', 'utf-8')
-const loginTemplate = fs.readFileSync('templates/pages/login.mustache')
+const loginTemplate = fs.readFileSync('templates/pages/login.mustache', 'utf-8')
+const adminTemplate = fs.readFileSync('templates/pages/admin.mustache', 'utf-8');
+
 
 const visualizerTemplate = fs.readFileSync('templates/pages/visualizer.html', 'utf-8')
 
@@ -1169,18 +1164,17 @@ app.get('/exports', async (req, res) => {
     return res.send(rendered)
 })
 
-app.get('/', async (req, res) => {
+app.get('/', requireLogin, async (req: Request, res: Response, next: NextFunction) => {
     const rendered = mustache.render(indexTemplate, { count: "14,491,682,918" })
 
     return res.send(rendered)
 })
 
 
-app.get('/visualize', async (req, res) => {
-    const rendered = mustache.render(visualizerTemplate, {})
-
-    return res.send(rendered)
-})
+app.get('/login', async (req, res) => {
+    const rendered = mustache.render(loginTemplate, { error: null });
+    return res.send(rendered);
+});
 
 app.get('/map', async (req, res) => {
     res.sendFile(__dirname + '/static/map.html')
@@ -1202,6 +1196,10 @@ app.get('/terms', (req, res) => {
 
 app.get('/faq', (req, res) => {
     res.sendFile(__dirname + '/static/faq.html')
+})
+
+app.get('/styles.css', (req, res) => {
+    res.sendFile(__dirname + '/static/styles.css')
 })
 
 // app.get('/donations', (req, res) => {
@@ -1623,70 +1621,99 @@ app.get('/spatial', async (req, res) => {
     }
 })
 
-const nodeVault = require('node-vault')({
-    apiVersion: 'v1',
-    endpoint: 'http://vault:8200',
-    token: 'your-vault-token'
+declare module 'express-session' {
+    interface SessionData {
+        user?: { id: string; username: string; role: string }; // Adjust according to your user object structure
+    }
+}
+
+const usersFilePath = __dirname + '/users/users.json';
+let users: any[] = []; // Consider defining a type for user objects
+
+try {
+    const usersData = fs.readFileSync(usersFilePath, 'utf-8');
+    users = JSON.parse(usersData);
+} catch (err) {
+    console.error('Error reading users file:', err);
+}
+
+// Session middleware
+app.use(session({
+    secret: 'your_session_secret', // Change this to a secure secret
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false } // set true if using https
+}));
+
+app.get('/login', (req: Request, res: Response) => {
+    res.sendFile(loginTemplate)
 });
 
-
-async function loginWithToken(req: CustomRequest, token: string): Promise<boolean> {
-    try {
-        const response = await nodeVault.tokenLookupSelf({ token });
-        if (response && response.data && response.data.policies?.length > 0) {
-            req.session.isAuthenticated = true;
-            req.session.token = token;
-            return true;
-        } else {
-            return false;
-        }
-    } catch (error) {
-        console.error('Error during token authentication with Vault:', error);
-        return false;
-    }
-}
+app.post('/login', async (req: Request, res: Response) => {
+    const { username, password } = req.body;
 
 
-
-async function isAuthenticated(req: CustomRequest): Promise<boolean> {
-    if (!req.session || !req.session.isAuthenticated) {
-        return false;
+    const user = users.find((user) => user.username === username);
+    if (!user) {
+        const rendered = mustache.render(loginTemplate, { error: 'Invalid username or password' });
+        return res.send(rendered);
     }
     try {
-        const response = await nodeVault.tokenLookupSelf({ token: req.session.token });
-        if (response && response.data && response.data.policies?.length > 0) {
-            return true;
+        if (await bcrypt.compare(password, user.password)) {
+            req.session!.user = user; // Note the non-null assertion operator `!`
+            return res.redirect('/');
         } else {
-            req.session.isAuthenticated = false;
-            return false;
+            const rendered = mustache.render(loginTemplate, { error: 'Invalid username or password' });
+            return res.send(rendered);
         }
-    } catch (error) {
-        console.error('Error validating token with Vault:', error);
-        req.session.isAuthenticated = false;
-        return false;
+    } catch (err) {
+        console.error('Error comparing passwords:', err);
+        return res.status(500).send('Internal Server Error');
     }
-}
-module.exports = isAuthenticated;
+});
 
+app.get('/logout', (req: Request, res: Response) => {
+    // Destroy the session
+    req.session.destroy((err) => {
+        if (err) {
+            console.error('Failed to destroy session during logout:', err);
+            return res.status(500).send('Failed to log out.');
+        }
 
-app.post('/login', async (req, res) => {
-    const token = req.body.token; // Get the token submitted by the form
+        // Optionally, you can clear the client-side cookie here if you set one during login
+        res.clearCookie('connect.sid'); // This depends on the name of your session cookie, adjust if different
 
-    // Use loginWithToken to validate the token with your Vault setup
-    const isAuthenticated = await loginWithToken(req, token);
-
-    if (isAuthenticated) {
-        // Redirect to a protected page if the login is successful
+        // Redirect to login page or home page after logout
         res.redirect('/');
+    });
+});
+
+function requireLogin(req: Request, res: Response, next: NextFunction) {
+    if (req.session && req.session.user) {
+        next();
     } else {
-        // If authentication fails, re-render the login page with an error message
-        res.render('login', { error: 'Invalid token. Please try again.' });
+        res.redirect('/login');
+    }
+}
+
+function checkUserRole(req: Request, roleToCheck: string): boolean {
+    return req.session?.user?.role === roleToCheck || false;
+}
+
+app.get('/admin', requireLogin, (req, res) => {
+    if (checkUserRole(req, 'admin')) {
+        const rendered = mustache.render(adminTemplate, {
+            message: "Welcome to the Admin Dashboard",
+        });
+        res.send(rendered);
+    } else {
+        res.status(403).send("Access denied: You do not have admin privileges.");
     }
 });
 
 
 
-app.get('/records', async (req, res) => {
+app.get('/records', requireLogin, async (req, res) => {
     try {
         const userAgent = req.headers['user-agent']
 
@@ -1695,15 +1722,6 @@ app.get('/records', async (req, res) => {
                 return doAutomatedRes(res, req.query.wt === 'json')
             }
         }
-
-        // if (!await isAuthenticated(req)) {
-        //     // User is not authenticated
-        //     res.status(401);
-        //     return res.json({
-        //         error: true,
-        //         message: 'Unauthorized: User must be logged in to access this resource. Your IP has been logged.'
-        //     });
-        // }
 
 
         if (req.query.wt === 'json') {

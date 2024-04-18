@@ -115,19 +115,6 @@ services:
     networks:
       - solr
 
-  vault:
-    image: hashicorp/vault
-    container_name: vault
-    ports:
-      - "8200:8200"
-    volumes:
-      - ./vault/backend:/vault/file
-      - ./vault/logs:/vault/logs
-      - ./vault/config:/vault/config
-      - ./vault/plugins:/vault/plugins
-    networks:
-      - vault
-
 networks:
   solr:
   vault:
