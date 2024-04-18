@@ -6,8 +6,8 @@ Fork of Search.0t.rocks
 
 ## Instructions
 1. Clone the repo `git clone "https://github.com/vulnlol/DataSearchEngine"`
-2. Enter into the repo 'cd DataSearchEngine'
-3. Run 'sh ./build-and-run.sh' or 'docker compose build; docker compose up'
+2. Enter into the repo `cd DataSearchEngine`
+3. Run `sh ./build-and-run.sh` or `docker compose build; docker compose up`
 4. After the docker containers finish building and running 
 ## Improvements
 - Enhanced styling across all pages and those lacking any at all
