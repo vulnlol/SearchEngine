@@ -251,7 +251,9 @@ const recordByIdTemplate = fs.readFileSync('templates/pages/recordById.mustache'
 const recordsListingTemplate = fs.readFileSync('templates/pages/recordsListing.mustache', 'utf-8')
 const exportsTemplate = fs.readFileSync('templates/pages/exports.html', 'utf-8')
 const loginTemplate = fs.readFileSync('templates/pages/login.mustache', 'utf-8')
-const adminTemplate = fs.readFileSync('templates/pages/admin.mustache', 'utf-8');
+const adminTemplate = fs.readFileSync('templates/pages/admin.mustache', 'utf-8')
+const changePasswordTemplate = fs.readFileSync('templates/pages/changePassword.mustache', 'utf-8')
+
 
 
 const visualizerTemplate = fs.readFileSync('templates/pages/visualizer.html', 'utf-8')
@@ -1164,15 +1166,25 @@ app.get('/exports', async (req, res) => {
     return res.send(rendered)
 })
 
-app.get('/', requireLogin, async (req: Request, res: Response, next: NextFunction) => {
-    const rendered = mustache.render(indexTemplate, { count: "14,491,682,918" })
+app.get('/', async (req: Request, res: Response, next: NextFunction) => {
+    const isLoggedIn = req.session && req.session.user; // Determine login status
+    const rendered = mustache.render(indexTemplate, {
+        count: "14,491,682,918",
+        isLoggedIn: isLoggedIn
+    });
+    console.log("Is user logged in?", isLoggedIn); // Debug: Log login status
+    return res.send(rendered);
+});
 
-    return res.send(rendered)
-})
 
 
 app.get('/login', async (req, res) => {
     const rendered = mustache.render(loginTemplate, { error: null });
+    return res.send(rendered);
+});
+
+app.get('/changepassword', async (req, res) => {
+    const rendered = mustache.render(changePasswordTemplate, { error: null });
     return res.send(rendered);
 });
 
@@ -1639,7 +1651,7 @@ try {
 
 // Session middleware
 app.use(session({
-    secret: 'your_session_secret', // Change this to a secure secret
+    secret: 'change-me-secret-key', // Change this to a secure secret
     resave: false,
     saveUninitialized: false,
     cookie: { secure: false } // set true if using https
@@ -1710,6 +1722,40 @@ app.get('/admin', requireLogin, (req, res) => {
         res.status(403).send("Access denied: You do not have admin privileges.");
     }
 });
+
+app.post('/changepassword', async (req: Request, res: Response) => {
+    // Use optional chaining to safely access user object
+    if (!req.session?.user) {
+        return res.redirect('/login');
+    }
+
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+    if (newPassword !== confirmPassword) {
+        const rendered = mustache.render(changePasswordTemplate, { error: "New passwords do not match." });
+        return res.send(rendered);
+    }
+
+    // Continue to use optional chaining to ensure user object is not undefined
+    const user = users.find(u => u.username === req.session?.user?.username);
+    if (!user) {
+        return res.status(404).send("User not found.");
+    }
+
+    const match = await bcrypt.compare(currentPassword, user.password);
+    if (!match) {
+        const rendered = mustache.render(changePasswordTemplate, { error: "Current password is incorrect." });
+        return res.send(rendered);
+    }
+
+    const saltRounds = 10;
+    user.password = await bcrypt.hash(newPassword, saltRounds);
+
+    // Save the updated user details
+    fs.writeFileSync(usersFilePath, JSON.stringify(users), 'utf8');
+
+    res.send("Password successfully changed.");
+});
+
 
 
 

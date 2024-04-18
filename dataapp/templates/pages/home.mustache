@@ -44,6 +44,20 @@
                                 <a href="/faq">FAQ</a> |
                                 <a href="/exports">Exports</a>
                             </h3>
+                            <h3 class="text-center">
+                                {{#isLoggedIn}}
+                                    <form action="/logout" method="post" style="display: inline;">
+                                        <button type="submit" class="v-btn v-btn--contained theme--light v-size--default red">
+                                            Logout
+                                        </button>
+                                    </form>
+                                {{/isLoggedIn}}
+                                {{^isLoggedIn}}
+                                    <a href="/login" class="v-btn v-btn--contained theme--light v-size--default blue">
+                                        Login
+                                    </a>
+                                {{/isLoggedIn}}
+                            </h3>
                         </v-col>
                     </v-row>
 
@@ -174,6 +188,7 @@
                     'Bank Account Numbers',
                     'Schools Attended',
                     'Certifications',
+                    'Political Affiliation'
                 ],
                 queryFieldMap: {
                     'First Name': 'firstName',
@@ -209,6 +224,7 @@
                     'Bank Account Numbers' : 'bankAccountNumbers',
                     'Schools Attended' : 'schoolsAttended',
                     'Certifications' : 'certifications',
+                    'Political Affiliation' : 'politicalAffiliation'
                 }
             }),
             mounted() {

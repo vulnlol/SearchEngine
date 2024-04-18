@@ -64,3 +64,4 @@ curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: app
 curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: application/json' --data-raw '{"add-field":{"name":"bankAccountNumbers","type":"string","stored":"true","indexed":"true","multiValued":"true"}}'
 curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: application/json' --data-raw '{"add-field":{"name":"schoolsAttended","type":"string","stored":"true","indexed":"true","multiValued":"true"}}'
 curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: application/json' --data-raw '{"add-field":{"name":"certifications","type":"string","stored":"true","indexed":"true","multiValued":"true"}}'
+curl 'http://127.0.0.1:8983/solr/BigData/schema?wt=json' -X POST -H 'Accept: application/json' --data-raw '{"add-field":{"name":"politicalAffiliation","type":"string","stored":"true","indexed":"true"}}'
