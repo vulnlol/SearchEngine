@@ -10,7 +10,8 @@ Fork of search.0t.rocks beautiful search engine.
 ## Improvements
 - Enhanced styling across all pages and those lacking any at all
 - Implemented a json based login system
-- Revamped the login system
+- Admin Panel (not implemented yet)
+
 
 ## Contributions
 I'm open to any and all contribtuions and suggestions to the search engine. Feel free to make a pull request and if all goes well then it will be merged.
