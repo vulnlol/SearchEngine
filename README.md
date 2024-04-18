@@ -1,6 +1,8 @@
 # Data Search Engine
  
-Fork of search.0t.rocks beautiful search engine.
+Have the ability to search billions of datasets retroactively!
+
+Fork of Search.0t.rocks
 
 ## Instructions
 1. Clone the repo `git clone "https://github.com/vulnlol/DataSearchEngine"`
