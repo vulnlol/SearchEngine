@@ -87,7 +87,7 @@ I'm open to any and all contribtuions and suggestions to the search engine. Feel
 <summary>Why is this open sourced?</summary>
 <br>
 
-Originally, I had not planned to open source this project. However, a turn of events has led me to reconsider this decision. A former collaborator, who was part of the project but did not contribute to the backend development, coding, or design—areas where I exclusively worked—began to show an unexpected interest in the detailed setup and operation of the project just before their departure. They did not contribute any suggestions or code during their time with the project.
+Originally, I had not planned to open source this project or publish it online at all since I was going to run it on a local system. However, a turn of events has led me to reconsider this decision. A former collaborator, who was part of the project but did not contribute to the backend development, coding, or design—areas where I exclusively worked—began to show an unexpected interest in the detailed setup and operation of the project just before their departure. They did not contribute any suggestions or code during their time with the project.
 
 Their inquiries intensified suddenly, focusing on how to get the project started, where the problems in the original code were, and how various components were supposed to function. This occurred despite the known issues with the original version hosted at searchl.0t.rocks, which included a non-functional wallet system and broken setup scripts.
 
