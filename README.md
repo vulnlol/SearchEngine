@@ -13,7 +13,11 @@ Fork of Search.0t.rocks
 - Enhanced styling across all pages and those lacking any at all
 - Implemented a json based login system
 - Admin Panel (not implemented yet)
+- Search News For Keywords (not implemented yet)
 
+## Admin Panel
+**( This Isn't Implemented Yet )**
+I will be introducing a admin panel in the future, it will have the ability to toggle user logins, the ability to toggle user registration, force password resets, and a way to add upload datasets to the databases.
 
 ## Contributions
 I'm open to any and all contribtuions and suggestions to the search engine. Feel free to make a pull request and if all goes well then it will be merged.
