@@ -19,8 +19,6 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           port: 22
           script: |
-            cd ~/htdocs/
-            git clone https://github.com/Valor-Intel/DataSearchEngine
             cd ~/htdocs/DataSearchEngine
             git pull origin main
             docker-compose down
