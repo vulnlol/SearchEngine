@@ -21,7 +21,7 @@ jobs:
           script: |
             cd ~/htdocs/
             git clone https://github.com/Valor-Intel/DataSearchEngine
-            cd ~/htdocs/Valor-Intel/DataSearchEngine
+            cd ~/htdocs/DataSearchEngine
             git pull origin main
             docker-compose down
             docker-compose up -d --build
