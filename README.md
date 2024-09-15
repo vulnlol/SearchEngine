@@ -23,8 +23,7 @@ I will be introducing a admin panel in the future, it will have the ability to t
 I'm open to any and all contribtuions and suggestions to the search engine. Feel free to make a pull request and if all goes well then it will be merged.
 
 ## Demo
-[Click Here For Demo](https://search.vuln.lol)
-
+**REMOVED**
 
 <details><summary>Search Field Parameters</summary><br>
 * Accuracy Radius
